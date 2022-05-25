@@ -67,12 +67,14 @@ ozo::pg::conn connection<OidMap, Statistics>::release() {
 template <typename OidMap, typename Statistics>
 template <typename WaitHandler>
 void connection<OidMap, Statistics>::async_wait_write(WaitHandler&& h) {
+    assign(release());
     socket_.async_write_some(asio::null_buffers(), std::forward<WaitHandler>(h));
 }
 
 template <typename OidMap, typename Statistics>
 template <typename WaitHandler>
 void connection<OidMap, Statistics>::async_wait_read(WaitHandler&& h) {
+    assign(release());
     socket_.async_read_some(asio::null_buffers(), std::forward<WaitHandler>(h));
 }
 
